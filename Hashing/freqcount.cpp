@@ -1,4 +1,5 @@
 #include <iostream>
+#include<string>
 using namespace std;
 
 // FREQUENCY COUNTING
@@ -87,20 +88,194 @@ bool isAnagram(string s, string t){
 }
 
 // TOP K FREQUENT WORDS (#692)
+// vector<string> topKFrequent(vector<string>& words, int k){
+//     unordered_map<string,int> mp;
+//     for(int i=0;i<words.size();i++){
+//         mp[words[i]]++;
+//     }
+//     priority_queue<pair<int,string>> pq;
+//     for(auto i:mp){
+//         // if same frequency then opposite lexicography
+        
+//     }
+
+// }
+
+//  TOP K FREQUENT WORDS (#692) **
+// this is a comparator 
+struct compare{
+    bool operator() (pair<int, string> a,pair<int ,string> b){
+        // return true means first one has lower priority
+
+        if(a.first == b.first){
+            // return wanted condition true
+            if(a.second >b.second){
+                return true; 
+            }
+            else{
+                return false;
+            }
+
+        }
+        else{
+            if(a.first> b.first){
+                return false;
+            }
+            else{
+                return true;
+            }
+        }
+    }
+};
+
 vector<string> topKFrequent(vector<string>& words, int k){
+    // priority_queue<Type, Container, Comparator> pq;
+    priority_queue<pair<int,string>,vector<pair<int,string>>,compare>pq;
+    // pair<int,string> - operation on which element
+    // vector<pair<int,string>> - where internally stored element
+    // compare - which operation used for it 
+
+    // reference 
+    // priority_queue<int> pq ;
+    // it is similar to  - priority_queue<int, vector<int> , less int> pq;
+    // where , type is int , container is vector <int> , comparator is less int 
+    // comaprator less 
+// struct compare{
+//     bool operator()(int a,int b){
+//         if( a<b){
+//             return true;
+//         }
+//         else{
+//             return false;
+//         }
+//     }
+// };
+
+
+// 
+
     unordered_map<string,int> mp;
+    vector<string> ans;
+
     for(int i=0;i<words.size();i++){
         mp[words[i]]++;
     }
-    priority_queue<pair<int,string>> pq;
+    
     for(auto i:mp){
-        // if same frequency then opposite lexicography
-        
+        pair<int,string> a= {i.second,i.first};
+        pq.push(a);
+        // don't need to do compare operator manually queue does it automatically
+
     }
 
-}~
+    while(k--){
+        ans.push_back(pq.top().second); // stored in pair form pair<int string> we need only string in ans
+        pq.pop();
+    }
+    return ans;
 
+}
 
+// time complexity and space 
+/*
+for frequency counting n
+for building heap through insertion  m*log m
+extracting k element k*logm
+ (n+ mlog m + klog m)
+for extra space m
+*/
+
+// SORT CHARACTER BY FREQUENCY (#451)
+string frequencySort(string s) {
+
+    unordered_map<char,int> mp;
+    string ans="";
+
+    for(int i=0;i<s.length();i++){
+        mp[s[i]]++;
+    }
+
+    priority_queue <pair<int,char>>pq;
+    for(auto i:mp){
+        pq.push({i.second,i.first});
+    }
+   
+    while(pq.size()){
+        int k= pq.top().first;
+
+        while(k--){
+            ans+=pq.top().second;
+        }
+        pq.pop();
+    }
+    return ans;
+}
+
+// tc and sc 
+/* m: distinct char
+
+frequecy count - n
+heap insertion - m*logm
+ans extracting - m.logm
+building ans - n
+tc = o(n+mlogm)
+
+space -o(m+n) for string ans
+*/
+
+// GROUP ANAGRAMS (#49) 
+
+bool compare(string a,string b){
+    return a<b;
+}
+
+// 
+bool isanagram (string s1, string s2){
+    unordered_map<char,int> mp;
+    for(int i=0;i< s1.length();i++){
+        mp[s1[i]]++;
+    }
+    for(int i=0;i<s2.length();i++){
+        mp[s2[i]]--;
+    }
+
+    for(auto i:mp){
+        if(i.second != 0){
+            return false;
+        }
+    }
+    return true;
+}
+
+vector<vector<string>> groupAnagrams(vector<string>& strs) {
+    vector<vector<string>> ans;
+    vector<string> ans1;
+    // first we should sort strs so that all anagram will looks similar and easy to collect
+
+    // take one string and compare it from other who will same put it in ans
+    sort(strs.begin(),strs.end());
+
+    // use two words anagram technique here
+    for(int i=0;i<strs.size();i++){
+        string s1= strs[i];
+        for(int j=i+1;j<strs.size();j++){
+            string s2= strs[j];
+            ans1.push_back(s2);
+            if(s1.length()!= s2.length()){
+                break;
+            }
+            else{
+                if(isanagram(s1,s2)){
+                    ans1.push_back(s2);
+                }
+                
+            }
+        }
+        ans.push_back(ans1);
+    }
+    return ans;
+}
+      
 int main(){
-
+    
 }
