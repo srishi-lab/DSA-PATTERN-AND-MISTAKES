@@ -14,3 +14,14 @@ int main(){
 }
  
 // #347 
+
+
+// #451
+// pq.top().first;    // Reading is allowed
+// pq.top().first--;  // Modifying is not allowed
+/*
+        while(pq.top().first){
+        ans+=pq.top().second;
+        pq.top().first--; // wrong
+        }
+*/
