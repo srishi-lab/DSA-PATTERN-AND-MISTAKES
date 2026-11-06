@@ -231,6 +231,10 @@ bool compare(string a,string b){
 
 // 
 bool isanagram (string s1, string s2){
+    if(s1.length() != s2.length()){
+        return false;
+    }
+
     unordered_map<char,int> mp;
     for(int i=0;i< s1.length();i++){
         mp[s1[i]]++;
@@ -246,6 +250,8 @@ bool isanagram (string s1, string s2){
     }
     return true;
 }
+
+// wrong approach
 
 vector<vector<string>> groupAnagrams(vector<string>& strs) {
     vector<vector<string>> ans;
@@ -275,7 +281,113 @@ vector<vector<string>> groupAnagrams(vector<string>& strs) {
     }
     return ans;
 }
-      
+
+// GROUP ANAGRAM (#49)
+ vector<vector<string>> groupAnagrams(vector<string>& strs){
+    vector<vector<string>> ans;
+
+    // for escaping repeating elements checking 
+    unordered_map<string,int> mp1;
+
+    for(int i=0;i<strs.size();i++){
+        string s1= strs[i];
+        if(mp1[s1]==0){
+            vector<string> ans1;
+            ans1.push_back(s1);
+            mp1[s1]++;
+            for(int j=i+1;j<strs.size();j++){
+                string s2= strs[j];
+                if(isanagram(s1,s2)){
+                    ans1.push_back(s2);
+                    mp1[s2]++;
+                }
+            }
+            
+            ans.push_back(ans1);
+        }
+        
+    }
+    return ans;
+
+ }
+
+ // optimised approach 
+ vector<vector<string>> groupAnagrams(vector<string>& strs){
+    vector<vector<string>> ans;
+    unordered_map<string,vector<string>> mp;
+
+    for(int i=0;i<strs.size();i++){
+        string key = strs[i];
+        sort(key.begin(),key.end());
+        mp[key].push_back(strs[i]);
+    }
+
+    for(auto i:mp){
+        ans.push_back(i.second);
+    }
+
+    return ans;
+ }
+
+ // first uinque character in strign (#387)
+ int firstUniqChar(string s) {
+        // unordered_map<pair<char,int>,int> mp;
+        // for(int i=0;i<s.length();i++){
+        //     mp.first[s[i]]++;
+        //     mp.first.second.push(i);
+        // }
+        unordered_map<char,pair<int,int>>mp1;
+        // char, pair(index,freq)
+        for(int i=0;i<s.length();i++){
+            mp1[s[i]].first= i;
+            mp1[s[i]].second++;
+        }
+
+        // for(auto i:mp){
+        //     if(i.second ==0){
+        //         return i.first.second;
+        //     }
+        // }
+        for(auto i:mp1){
+            if(i.second.second ==0){
+                return i.second.first;
+            }
+        }
+
+    return -1;
+        
+    }
+
+    //
+    //4SUM II (#454)
+
+    int fourSumCount(vector<int>& nums1, vector<int>& nums2, vector<int>& nums3, vector<int>& nums4) {
+
+    unordered_map<int,int> mp;
+    int ans=0;
+    
+    for(int i:nums1){
+        for(int j:nums2){
+            mp[i+j]++;
+        }
+    }
+
+    for(int i:nums3){
+        for(int j:nums4){
+            int complement = -(i+j);
+            auto it = mp.find(complement);
+            if(it != mp.end()){
+                ans+=it->second;
+            }
+            }
+        }
+    
+    return ans;
+        
+    }
+
+
+
 int main(){
     
 }
