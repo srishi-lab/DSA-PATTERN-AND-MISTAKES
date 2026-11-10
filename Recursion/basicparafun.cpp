@@ -205,7 +205,57 @@ public:
 };
 
 
+// 1432 easy count step in making number to zero
+class Solution {
+     int countstep(int count,int num){
+        // base case
+        if(num==0){
+            return count;
+        }
 
+        if(num %2==0){
+            num = num/2;
+            return countstep(count+1,num);
+        }
+        else{
+            num =num-1;
+            return countstep(count+1,num);
+        }
+     }
+public:
+    int numberOfSteps(int num) {
+        int ans = countstep(0,num);
+        return ans;
+
+        
+    }
+};
+
+// optimised version clean code 
+class Solution {
+     int countstep(int num){
+        // base case
+        if(num==0){
+            return 0;
+        }
+
+        if(num %2==0){
+          
+            return 1+ countstep(num/2);
+        }
+        else{
+            
+            return 1+ countstep(num-1);
+        }
+     }
+public:
+    int numberOfSteps(int num) {
+       return countstep(num);
+
+        
+    }
+};
+ 
 int main(){
     // cout<<mypow(2.00000,10);
     // cout<<mypow(2,10);
