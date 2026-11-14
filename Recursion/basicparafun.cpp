@@ -263,3 +263,24 @@ int main(){
 
 
 }
+//  #326
+class Solution {
+public:
+    bool isPowerOfThree(int n) {
+        // base case
+        if(n==1) return true;
+        if(n%3!=0 || n==0) return false;
+        return isPowerOfThree(n/3);
+        
+    }
+};
+// The largest power of 3 that fits in a signed 32-bit integer is:
+// \[
+// 3^{19}=1162261467
+// \]
+class Solution {
+public:
+    bool isPowerOfThree(int n) {
+        return n > 0 && 1162261467 % n == 0;
+    }
+};
